@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Text.Json.Serialization;
 
@@ -7,19 +9,18 @@ namespace MovieSystemAPI.Models
 {
     public class Genre
     {
-        //[Key]
+        [Key]
         [JsonPropertyName("id")]
         public int GenreId { get; set; }
 
-        //[Required]
-        //[MaxLength(50)]
-        //[DisplayName("First Name")]
+        [Required]
+        [MaxLength(50)]
+        [DisplayName("name")]
         [JsonPropertyName("name")]
         public string GenreTitle { get; set; } = string.Empty;
 
-        //[Required]
-        //[MaxLength(50)]
-        //[DisplayName("Last Name")]
+        [MaxLength(50)]
+        [DisplayName("description")]
         public string GenreDescription { get; set; } = string.Empty;
     }
 
