@@ -40,11 +40,6 @@ namespace MovieSystemAPI.Controllers
             return Ok(genre);
         }
 
-        /// <summary>
-        /// insert a new genre to the list TmdbApi's List
-        /// </summary>
-        /// <param name="genre"></param>
-        /// <returns></returns>
         // POST api/<GenreController>
         [HttpPost]
         public async Task<ActionResult<GenresResponse>> AddGenre(Genre genre)
