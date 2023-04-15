@@ -24,8 +24,8 @@ namespace MovieSystemAPI.Services
         }
         public async Task<List<Genre>> GetGenresAsync()
         {
-            var searchGenre = _configuration.GetValue<string>("SearchGenre");
-            var url = GetSearchQueryUri(searchGenre);
+            var searchGenreUrl = _configuration.GetValue<string>("SearchGenreUrl");
+            var url = GetSearchQueryUri(searchGenreUrl);
 
             var response = await _httpClient.GetAsync(url);
 
