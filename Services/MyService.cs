@@ -22,7 +22,7 @@ namespace MovieSystemAPI.Services
             var url = $"{searchQuery}{apiKey}{apiLanguage}";
             return url;
         }
-        public async Task<List<Genre>> GetGenresAsync()
+        public async Task<List<Genre>> GetGenresTmdb()
         {
             var searchGenreUrl = _configuration.GetValue<string>("SearchGenreUrl");
             var url = GetSearchQueryUri(searchGenreUrl);
