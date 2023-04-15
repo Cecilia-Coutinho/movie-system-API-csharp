@@ -71,11 +71,5 @@ namespace MovieSystemAPI.Controllers
             genre.GenreDescription = request.GenreDescription;
             return Ok(genresList);
         }
-
-        // DELETE api/<GenreController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
