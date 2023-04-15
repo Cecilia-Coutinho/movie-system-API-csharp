@@ -55,34 +55,19 @@ namespace MovieSystemAPI.Controllers
         }
 
         //PUT api/<GenreController>/5
-        //[HttpPut]
-        //public async Task<ActionResult<GenresResponse>> UpdateGenre(Genre request)
-        //{
-        //    var genresList = await _myService.GetGenresTmdb();
-        //    var genre = genresList.Find(g => g.GenreId == request.GenreId);
-
-        //    if (genre == null)
-        //    {
-        //        return BadRequest("Genre not found");
-        //    }
-
-        //    genre.GenreTitle = request.GenreTitle;
-        //    genre.GenreDescription = request.GenreDescription;
-        //    return Ok(genresList);
-        //}
-
-        //PUT api/<GenreController>/5
-        [HttpPut]
-        public async Task<ActionResult<GenresResponse>> UpdateGenreDescription(Genre request)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<GenresResponse>> UpdateGenre(Genre request, int id)
         {
             var genresList = await _myService.GetGenresTmdb();
-            var genre = genresList.Find(g => g.GenreId == request.GenreId);
+            var genre = genresList.Find(g => g.GenreId == id);
 
             if (genre == null)
             {
                 return BadRequest("Genre not found");
             }
 
+            //genre.GenreId = request.GenreId;
+            //genre.GenreTitle = request.GenreTitle;
             genre.GenreDescription = request.GenreDescription;
             return Ok(genresList);
         }
