@@ -21,6 +21,12 @@ namespace MovieSystemAPI.Migrations
                 {
                     table.PrimaryKey("PK_Genres", x => x.GenreId);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Genres_GenreTitle",
+                table: "Genres",
+                column: "GenreTitle",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

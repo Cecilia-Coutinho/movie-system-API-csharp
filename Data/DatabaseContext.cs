@@ -17,11 +17,11 @@ namespace MovieSystemAPI.Data
         //    .GetConnectionString("DefaultConnection"));
         //}
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Person>()
-        //        .HasIndex(u => u.Email)
-        //        .IsUnique();
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Genre>()
+                .HasIndex(gt => gt.GenreTitle)
+                .IsUnique();
+        }
     }
 }

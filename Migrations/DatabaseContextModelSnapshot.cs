@@ -41,6 +41,9 @@ namespace MovieSystemAPI.Migrations
 
                     b.HasKey("GenreId");
 
+                    b.HasIndex("GenreTitle")
+                        .IsUnique();
+
                     b.ToTable("Genres");
                 });
 #pragma warning restore 612, 618
