@@ -2,6 +2,7 @@
 using MovieSystemAPI.Models;
 using MovieSystemAPI.Services;
 using System.Net.Http;
+using System.Net.WebSockets;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -20,23 +21,38 @@ namespace MovieSystemAPI.Controllers
 
         // GET: api/<GenreController>
         [HttpGet]
-        public async Task<IActionResult> GetGenresAsync()
+        public async Task<ActionResult<GenresResponse>> GetGenresAsync()
         {
-            var genres = await _myService.GetGenresAsync();
-            return Ok(genres);
+            var genresList = await _myService.GetGenresAsync();
+            return Ok(genresList);
         }
 
         // GET api/<GenreController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<Genre>> GetGenreByIdAsync(int id)
         {
-            return "value";
+            var genresList = await _myService.GetGenresAsync();
+            var genre = genresList.Find(g => g.GenreId == id);
+            if (genre == null)
+            {
+                return BadRequest("Genre not found");
+            }
+            return Ok(genre);
         }
 
         // POST api/<GenreController>
+        //[HttpPost]
+        //public void Post([FromBody] string value)
+        //{
+        //}
+
+        // POST api/<GenreController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<GenresResponse>> AddGenre(Genre newGenre)
         {
+            var genres = await _myService.GetGenresAsync();
+            genres.Add(newGenre);
+            return Ok(genres);
         }
 
         // PUT api/<GenreController>/5
