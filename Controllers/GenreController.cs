@@ -54,25 +54,25 @@ namespace MovieSystemAPI.Controllers
             return Ok(genresList);
         }
 
-        // PUT api/<GenreController>/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<GenresResponse>> UpdateGenre(Genre request)
-        {
-            var genresList = await _myService.GetGenresTmdb();
-            var genre = genresList.Find(g => g.GenreId == request.GenreId);
+        //PUT api/<GenreController>/5
+        //[HttpPut]
+        //public async Task<ActionResult<GenresResponse>> UpdateGenre(Genre request)
+        //{
+        //    var genresList = await _myService.GetGenresTmdb();
+        //    var genre = genresList.Find(g => g.GenreId == request.GenreId);
 
-            if (genre == null)
-            {
-                return BadRequest("Genre not found");
-            }
+        //    if (genre == null)
+        //    {
+        //        return BadRequest("Genre not found");
+        //    }
 
-            genre.GenreTitle = request.GenreTitle;
-            genre.GenreDescription = request.GenreDescription;
-            return Ok(genre);
-        }
+        //    genre.GenreTitle = request.GenreTitle;
+        //    genre.GenreDescription = request.GenreDescription;
+        //    return Ok(genresList);
+        //}
 
-        // PUT api/<GenreController>/5
-        [HttpPut("{id}")]
+        //PUT api/<GenreController>/5
+        [HttpPut]
         public async Task<ActionResult<GenresResponse>> UpdateGenreDescription(Genre request)
         {
             var genresList = await _myService.GetGenresTmdb();
@@ -84,7 +84,7 @@ namespace MovieSystemAPI.Controllers
             }
 
             genre.GenreDescription = request.GenreDescription;
-            return Ok(genre);
+            return Ok(genresList);
         }
 
         // DELETE api/<GenreController>/5
