@@ -21,7 +21,7 @@ namespace MovieSystemAPI.Controllers
             _context = context;
         }
 
-        // GET: api/<GenreController>
+        // GET:
         [HttpGet("TMDB/FetchGenres")]
         public async Task<ActionResult<GenresResponse>> GetGenresFromTmdb()
         {
@@ -35,7 +35,6 @@ namespace MovieSystemAPI.Controllers
             return Ok(await _context.Genres.ToListAsync());
         }
 
-        // GET api/<GenreController>/5
         [HttpGet("TMDB/{tmdbId}")]
         public async Task<ActionResult<Genre>> GetGenreFromTmdbById(int tmdbId)
         {
@@ -64,6 +63,7 @@ namespace MovieSystemAPI.Controllers
             return Ok(genre);
         }
 
+        // POST:
         [HttpPost("Fetch&AddTmdbListToDb")]
         public async Task<ActionResult<GenresResponse>> AddTmdbListToDb()
         {
