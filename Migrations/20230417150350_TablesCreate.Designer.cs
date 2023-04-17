@@ -11,8 +11,8 @@ using MovieSystemAPI.Data;
 namespace MovieSystemAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230417130248_PersonCreate")]
-    partial class PersonCreate
+    [Migration("20230417150350_TablesCreate")]
+    partial class TablesCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,6 +78,58 @@ namespace MovieSystemAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("People");
+                });
+
+            modelBuilder.Entity("MovieSystemAPI.Models.PersonGenre", b =>
+                {
+                    b.Property<int>("PersonGenreId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonGenreId"), 1L, 1);
+
+                    b.Property<int>("FkGenreId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FkPersonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PersonGenreId");
+
+                    b.HasIndex("FkGenreId");
+
+                    b.HasIndex("FkPersonId");
+
+                    b.ToTable("PersonGenres");
+                });
+
+            modelBuilder.Entity("MovieSystemAPI.Models.PersonGenre", b =>
+                {
+                    b.HasOne("MovieSystemAPI.Models.Genre", "Genres")
+                        .WithMany("PersonGenres")
+                        .HasForeignKey("FkGenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieSystemAPI.Models.Person", "People")
+                        .WithMany("PersonGenres")
+                        .HasForeignKey("FkPersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Genres");
+
+                    b.Navigation("People");
+                });
+
+            modelBuilder.Entity("MovieSystemAPI.Models.Genre", b =>
+                {
+                    b.Navigation("PersonGenres");
+                });
+
+            modelBuilder.Entity("MovieSystemAPI.Models.Person", b =>
+                {
+                    b.Navigation("PersonGenres");
                 });
 #pragma warning restore 612, 618
         }

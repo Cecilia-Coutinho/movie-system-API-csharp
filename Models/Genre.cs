@@ -22,6 +22,7 @@ namespace MovieSystemAPI.Models
         [MaxLength(70)]
         [DisplayName("description")]
         public string GenreDescription { get; set; } = string.Empty;
+        public List<PersonGenre> PersonGenres { get; set; }
     }
 
     public class GenresResponse

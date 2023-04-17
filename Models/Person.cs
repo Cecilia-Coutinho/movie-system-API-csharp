@@ -21,5 +21,7 @@ namespace MovieSystemAPI.Models
         [Required]
         [MaxLength(200)]
         public string Email { get; set; } = string.Empty;
+
+        public List<PersonGenre> PersonGenres { get; set; }
     }
 }
