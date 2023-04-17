@@ -22,21 +22,25 @@ namespace MovieSystemAPI.Controllers
         }
 
         // GET: api/<GenreController>
-        [HttpGet]
-        public async Task<ActionResult<GenresResponse>> GetGenres()
+        [HttpGet("TMDB/FetchGenres")]
+        public async Task<ActionResult<GenresResponse>> GetGenresFromTmdb()
         {
             var genresList = await _myService.GetGenresTmdb();
             return Ok(genresList);
+        }
 
-            //return Ok(await _context.Genres.ToListAsync());
+        [HttpGet("FromDb")]
+        public async Task<ActionResult<GenresResponse>> GetGenresFromDb()
+        {
+            return Ok(await _context.Genres.ToListAsync());
         }
 
         // GET api/<GenreController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Genre>> GetGenreById(int id)
+        [HttpGet("TMDB/{tmdbId}")]
+        public async Task<ActionResult<Genre>> GetGenreFromTmdbById(int tmdbId)
         {
             var genresList = await _myService.GetGenresTmdb();
-            var genre = genresList.Find(g => g.GenreId == id);
+            var genre = genresList.Find(g => g.GenreId == tmdbId);
 
             //var genre = await _context.Genres.FindAsync(id);
 
@@ -46,6 +50,20 @@ namespace MovieSystemAPI.Controllers
             }
             return Ok(genre);
         }
+
+        // GET api/<GenreController>/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Genre>> GetGenreById(int id)
+        {
+            var genre = await _context.Genres.FindAsync(id);
+
+            if (genre == null)
+            {
+                return BadRequest("Genre not found");
+            }
+            return Ok(genre);
+        }
+
 
         // POST api/<GenreController>
         //[HttpPost]
