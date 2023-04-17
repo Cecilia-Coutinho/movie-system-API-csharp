@@ -64,16 +64,6 @@ namespace MovieSystemAPI.Controllers
             return Ok(genre);
         }
 
-
-        // POST api/<GenreController>
-        //[HttpPost]
-        //public async Task<ActionResult<GenresResponse>> AddGenre(Genre genre)
-        //{
-        //    var genresList = await _myService.GetGenresTmdb();
-        //    genresList.Add(genre);
-        //    return Ok(genresList);
-        //}
-
         [HttpPost("Fetch&AddTmdbListToDb")]
         public async Task<ActionResult<GenresResponse>> AddTmdbListToDb()
         {
@@ -104,7 +94,7 @@ namespace MovieSystemAPI.Controllers
         [HttpPost("AddGenre")]
         public async Task<ActionResult<GenresResponse>> AddGenre(Genre genre)
         {
-            // retrieve the list of genres already exists in the database, if exists any
+            // retrieve the list of genres already exists in the database
             var existingGenres = await _context.Genres.Select(gt => gt.GenreTitle).ToListAsync();
 
             if (existingGenres.Contains(genre.GenreTitle))
