@@ -7,11 +7,13 @@ namespace MovieSystemAPI.Services
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;  //to read from JSON
+        private readonly DatabaseContext _context;
 
-        public MyService(HttpClient httpClient, IConfiguration configuration)
+        public MyService(HttpClient httpClient, IConfiguration configuration, DatabaseContext context)
         {
             _httpClient = httpClient;
             _configuration = configuration;
+            _context = context;
         }
 
         private string GetSearchQueryUri(string searchQuery)
@@ -81,6 +83,19 @@ namespace MovieSystemAPI.Services
             };
 
             return await Task.FromResult(genreDescriptions);
+        }
+
+        public async Task PeopleDataSeed()
+        {
+            var file = File.ReadAllText("PeopleDataSample.json");
+            var peopleSeed = JsonSerializer.Deserialize<List<Person>>(file);
+
+            if (peopleSeed != null)
+            {
+                _context.People.AddRange(peopleSeed);
+                _context.SaveChanges();
+            }
+            await Task.CompletedTask;
         }
     }
 }
