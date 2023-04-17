@@ -86,6 +86,14 @@ namespace MovieSystemAPI.Controllers
         [HttpPost("AddGenre")]
         public async Task<ActionResult<GenresResponse>> AddGenre(Genre genre)
         {
+            // retrieve the list of genres already exists in the database, if exists any
+            var existingGenres = await _context.Genres.Select(gt => gt.GenreTitle).ToListAsync();
+
+            if (existingGenres.Contains(genre.GenreTitle))
+            {
+                return BadRequest("Genre already exists in the database");
+            }
+
             _context.Genres.Add(genre);
             await _context.SaveChangesAsync();
             return Ok(await _context.Genres.ToListAsync());
