@@ -84,18 +84,5 @@ namespace MovieSystemAPI.Services
 
             return await Task.FromResult(genreDescriptions);
         }
-
-        public async Task PeopleDataSeed()
-        {
-            var file = File.ReadAllText("PeopleDataSample.json");
-            var peopleSeed = JsonSerializer.Deserialize<List<Person>>(file);
-
-            if (peopleSeed != null)
-            {
-                _context.People.AddRange(peopleSeed);
-                _context.SaveChanges();
-            }
-            await Task.CompletedTask;
-        }
     }
 }
