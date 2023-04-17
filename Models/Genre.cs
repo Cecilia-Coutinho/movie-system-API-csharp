@@ -19,13 +19,13 @@ namespace MovieSystemAPI.Models
         [JsonPropertyName("name")]
         public string GenreTitle { get; set; } = string.Empty;
 
-        [MaxLength(50)]
+        [MaxLength(70)]
         [DisplayName("description")]
         public string GenreDescription { get; set; } = string.Empty;
     }
 
     public class GenresResponse
     {
-        public List<Genre> Genres { get; set; }
+        public List<Genre>? Genres { get; set; }
     }
 }

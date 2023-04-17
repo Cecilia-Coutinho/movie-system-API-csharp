@@ -56,39 +56,40 @@ namespace MovieSystemAPI.Controllers
         //    return Ok(genresList);
         //}
 
-        [HttpPost]
-        public async Task<ActionResult<GenresResponse>> FetchAndUpdateDB()
+        [HttpPost("Fetch&AddTmdbListToDb")]
+        public async Task<ActionResult<GenresResponse>> AddTmdbListToDb()
         {
             var genresList = await _myService.GetGenresTmdb();
+            var genreDescriptions = await _myService.GenresDescriptions();
 
+            // retrieve the list of genres already exists in the database, if exists any
+            var existingGenres = await _context.Genres.Select(gt => gt.GenreTitle).ToListAsync();
+
+            // iterate through genres and add descriptions
             for (int i = 0; i < genresList.Count; i++)
             {
                 Genre genre = genresList[i];
-                genre.GenreId = 0;
-                _context.Genres.Add(genre);
+
+                // check if the title already exists in the db
+                if (!existingGenres.Contains(genre.GenreTitle))
+                {
+                    genre.GenreId = 0; //to not retrieve same id
+                    genre.GenreDescription = genreDescriptions.GetValueOrDefault(genre.GenreTitle, ""); //fetch description from the diccionary
+                    _context.Genres.Add(genre);
+                }
             }
 
             await _context.SaveChangesAsync();
-
             return Ok(await _context.Genres.ToListAsync());
         }
 
-        //[HttpPost]
-        //public async Task<ActionResult<GenresResponse>> AddDatabaseItem(Genre genre)
-        //{
-        //    _context.Genres.Add(genre);
-        //    await _context.SaveChangesAsync();
-        //    return Ok(await _context.Genres.ToListAsync());
-        //}
-
-        // POST api/<GenreController>
-        //[HttpPost]
-        //public async Task<ActionResult<GenresResponse>> AddGenre(Genre genre)
-        //{
-        //    _context.Genres.Add(genre);
-        //    await _context.SaveChangesAsync();
-        //    return Ok(await _context.Genres.ToListAsync());
-        //}
+        [HttpPost("AddGenre")]
+        public async Task<ActionResult<GenresResponse>> AddGenre(Genre genre)
+        {
+            _context.Genres.Add(genre);
+            await _context.SaveChangesAsync();
+            return Ok(await _context.Genres.ToListAsync());
+        }
 
         //PUT api/<GenreController>/5
         [HttpPut("{id}")]
@@ -102,7 +103,6 @@ namespace MovieSystemAPI.Controllers
                 return BadRequest("Genre not found");
             }
 
-            //genre.GenreId = request.GenreId;
             //genre.GenreTitle = request.GenreTitle;
             genre.GenreDescription = request.GenreDescription;
             return Ok(genresList);

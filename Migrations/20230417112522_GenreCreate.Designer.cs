@@ -11,7 +11,7 @@ using MovieSystemAPI.Data;
 namespace MovieSystemAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230415221100_GenreCreate")]
+    [Migration("20230417112522_GenreCreate")]
     partial class GenreCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,8 +33,8 @@ namespace MovieSystemAPI.Migrations
 
                     b.Property<string>("GenreDescription")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(70)
+                        .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("GenreTitle")
                         .IsRequired()

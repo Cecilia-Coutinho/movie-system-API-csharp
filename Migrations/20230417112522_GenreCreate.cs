@@ -15,7 +15,7 @@ namespace MovieSystemAPI.Migrations
                     GenreId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GenreTitle = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    GenreDescription = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                    GenreDescription = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false)
                 },
                 constraints: table =>
                 {

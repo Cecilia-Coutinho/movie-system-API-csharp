@@ -42,5 +42,45 @@ namespace MovieSystemAPI.Services
             var genres = result?.Genres;
             return genres ?? new List<Genre>(); //if null return an empty list
         }
+
+        public async Task<Dictionary<string, string>> GenresDescriptions()
+        {
+            var genreDescriptions = new Dictionary<string, string>
+            {
+                {"Action", "Non-stop adrenaline. Explosive action."},
+                {"Adventure", "Journey to the unknown. Thrilling exploration."},
+                {"Animation", "Imaginative world. Animated characters."},
+                {"Biography", "Real-life stories. Dramatic portrayals."},
+                {"Comedy", "Laugh-out-loud humor. Witty and entertaining."},
+                {"Crime", "Gritty underworld. Intricate investigations."},
+                {"Documentary", "Real-life stories. Informative."},
+                {"Drama", "Emotional depth. Compelling storytelling."},
+                {"Family", "Heartwarming tales. Suitable for all ages."},
+                {"Fantasy", "Enchanting worlds. Mythical creatures."},
+                {"Film Noir", "Dark and moody. Brooding dramas."},
+                {"History", "Rich historical context. Time-traveling."},
+                {"Horror", "Creepy and frightening. Scary monsters."},
+                {"Music", "Rhythmic melodies. Musical performances."},
+                {"Musical", "Singing and dancing. Show-stopping numbers."},
+                {"Mystery", "Mysterious whodunits. Puzzling plot twists."},
+                {"Romance", "Heartfelt love stories. Passionate romances."},
+                {"Science Fiction", "Futuristic worlds. Imaginative concepts."},
+                {"Short Film", "Concise storytelling. Creative expression."},
+                {"Sport", "Competitive athletics. Inspiring achievements."},
+                {"Superhero", "Extraordinary abilities. Epic battles."},
+                {"Suspense", "Nail-biting tension. Suspenseful plot."},
+                {"TV Movie", "Feature-length productions for TV."},
+                {"Thriller", "Intense and exciting. Edge-of-your-seat action."},
+                {"War", "Battleground stories. Heroic sacrifices."},
+                {"Western", "Cowboys and outlaws. Action-packed shootouts."},
+                {"Epic", "Grand and majestic. Epic in scale."},
+                {"Erotic", "Sensual and provocative. Sexual content."},
+                {"Experimental", "Innovative and unconventional. Artistic exploration."},
+                {"Mockumentary", "Hilarious satire. Mocking documentaries."},
+                {"Satire", "Social commentary. Humorous ridicule."}
+            };
+
+            return await Task.FromResult(genreDescriptions);
+        }
     }
 }
