@@ -21,6 +21,8 @@ namespace MovieSystemAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Person>>> GetPeopleFromDb()
         {
+            await _context.PeopleDataSeed();
+            _context.Database.EnsureCreated();
             return Ok(await _context.People.ToListAsync());
         }
 
