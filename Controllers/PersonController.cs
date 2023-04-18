@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieSystemAPI.Models;
 using MovieSystemAPI.Services;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,7 +21,7 @@ namespace MovieSystemAPI.Controllers
 
         // GET: api/<PersonController>
         [HttpGet]
-        public async Task<ActionResult<List<Person>>> GetPeopleFromDb()
+        public async Task<ActionResult<List<Person>>> GetAll()
         {
             await _context.PeopleDataSeed(); //ensure to seed some data if is empty
             return Ok(await _context.People.ToListAsync());
@@ -27,7 +29,7 @@ namespace MovieSystemAPI.Controllers
 
         // GET api/<PersonController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetPersonById(int id)
+        public async Task<ActionResult<Person>> GetById(int id)
         {
             var person = await _context.People.FindAsync(id);
 
