@@ -23,20 +23,20 @@ namespace MovieSystemAPI.Controllers
 
         // GET:
         [HttpGet("TMDB/FetchGenres")]
-        public async Task<ActionResult<GenresResponse>> GetGenresFromTmdb()
+        public async Task<ActionResult<GenresResponse>> GetAllFromTmdb()
         {
             var genresList = await _myService.GetGenresTmdb();
             return Ok(genresList);
         }
 
         [HttpGet("FromDb")]
-        public async Task<ActionResult<GenresResponse>> GetGenresFromDb()
+        public async Task<ActionResult<GenresResponse>> GetAllFromDb()
         {
             return Ok(await _context.Genres.ToListAsync());
         }
 
         [HttpGet("TMDB/{tmdbId}")]
-        public async Task<ActionResult<Genre>> GetGenreFromTmdbById(int tmdbId)
+        public async Task<ActionResult<Genre>> GetFromTmdbById(int tmdbId)
         {
             var genresList = await _myService.GetGenresTmdb();
             var genre = genresList.Find(g => g.GenreId == tmdbId);
@@ -52,7 +52,7 @@ namespace MovieSystemAPI.Controllers
 
         // GET api/<GenreController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Genre>> GetGenreById(int id)
+        public async Task<ActionResult<Genre>> GetById(int id)
         {
             var genre = await _context.Genres.FindAsync(id);
 
