@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using System.Text.Json.Serialization;
 
 namespace MovieSystemAPI.Models
 {
@@ -22,6 +23,7 @@ namespace MovieSystemAPI.Models
         [MaxLength(200)]
         public string Email { get; set; } = string.Empty;
 
+        [JsonIgnore]
         public List<PersonGenre> PersonGenres { get; set; }
     }
 }
