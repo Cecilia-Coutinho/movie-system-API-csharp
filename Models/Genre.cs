@@ -24,7 +24,7 @@ namespace MovieSystemAPI.Models
         public string GenreDescription { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public List<PersonGenre> PersonGenres { get; set; }
+        public List<PersonGenre>? PersonGenres { get; set; }
     }
 
     public class GenresResponse

@@ -24,9 +24,9 @@ namespace MovieSystemAPI.Models
         public string Email { get; set; } = string.Empty;
 
         [JsonIgnore]
-        public List<PersonGenre> PersonGenres { get; set; }
+        public List<PersonGenre>? PersonGenres { get; set; }
 
         [JsonIgnore]
-        public List<PersonMovie> PersonMovies { get; set; }
+        public List<PersonMovie>? PersonMovies { get; set; }
     }
 }
