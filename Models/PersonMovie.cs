@@ -18,9 +18,9 @@ namespace MovieSystemAPI.Models
 
 
         [JsonIgnore]
-        public virtual Person? People { get; set; }
+        public virtual Person People { get; set; }
 
         [JsonIgnore]
-        public virtual Movie? Movies { get; set; }
+        public virtual Movie Movies { get; set; }
     }
 }
