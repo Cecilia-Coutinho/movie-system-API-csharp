@@ -3,6 +3,7 @@ using MovieSystemAPI.Models;
 using System.Linq;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using System;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,7 +25,14 @@ namespace MovieSystemAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PersonGenre>>> GetAll()
         {
-            return Ok(await _context.PersonGenres.ToListAsync());
+            var personGenreList = await _context.PersonGenres.ToListAsync();
+
+            if (personGenreList == null)
+            {
+                return BadRequest($"PersonGenre is empty.");
+            }
+
+            return Ok(personGenreList);
         }
 
         // GET api/<PersonGenreController>/5
