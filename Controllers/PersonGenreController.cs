@@ -89,7 +89,7 @@ namespace MovieSystemAPI.Controllers
                 return BadRequest($"Person with ID {personId} not found");
             }
 
-            var genre = await _context.Genres.FindAsync(genreId);
+            var genre = await _context.Movies.FindAsync(genreId);
             if (genre == null)
             {
                 return BadRequest($"Genre with ID {genreId} not found");
@@ -105,7 +105,7 @@ namespace MovieSystemAPI.Controllers
                 return BadRequest("This combination already exists in the database");
             }
 
-            // Create a new PersonGenre object and add it to the database
+            // Create a new PersonGenres object and add it to the database
             PersonGenre personGenre = new PersonGenre()
             {
                 FkPersonId = personId,

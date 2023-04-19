@@ -48,14 +48,14 @@ namespace MovieSystemAPI.Controllers
             await _context.SaveChangesAsync();
 
             //Get Data:
-            return Ok(await _context.Genres.ToListAsync());
+            return Ok(await _context.Movies.ToListAsync());
         }
 
         // GET api/<GenreController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Genre>> GetById(int id)
         {
-            var genre = await _context.Genres.FindAsync(id);
+            var genre = await _context.Movies.FindAsync(id);
 
             if (genre == null)
             {

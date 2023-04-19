@@ -21,17 +21,10 @@ namespace MovieSystemAPI.Controllers
         }
 
         // GET:
-        [HttpGet("TMDB/FetchMovies")]
-        public async Task<ActionResult<MoviesResponse>> GetAllFromTmdb()
+        [HttpGet]
+        public async Task<ActionResult<MoviesResponse>> GetAll()
         {
-            var moviesList = await _myService.GetMoviesTmdb();
-            return Ok(moviesList);
-        }
-
-        // POST:
-        [HttpPost("AddFetchedMovies")]
-        public async Task<ActionResult<MoviesResponse>> FetchAndAddMoviesToDb()
-        {
+            //ensure to seed data if is empty
             var moviesList = await _myService.GetMoviesTmdb();
             var addMovies = new List<Movie>();
 
@@ -52,6 +45,8 @@ namespace MovieSystemAPI.Controllers
             }
 
             await _context.SaveChangesAsync();
+
+            //Get Data:
             return Ok(await _context.Movies.ToListAsync());
         }
     }
