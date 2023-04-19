@@ -21,52 +21,10 @@ namespace MovieSystemAPI.Controllers
             _context = context;
         }
 
-        // GET:
-        [HttpGet("TMDB/FetchGenres")]
-        public async Task<ActionResult<GenresResponse>> GetAllFromTmdb()
+        [HttpGet]
+        public async Task<ActionResult<GenresResponse>> GetAll()
         {
-            var genresList = await _myService.GetGenresTmdb();
-            return Ok(genresList);
-        }
-
-        [HttpGet("FromDb")]
-        public async Task<ActionResult<GenresResponse>> GetAllFromDb()
-        {
-            return Ok(await _context.Genres.ToListAsync());
-        }
-
-        [HttpGet("TMDB/{tmdbId}")]
-        public async Task<ActionResult<Genre>> GetFromTmdbById(int tmdbId)
-        {
-            var genresList = await _myService.GetGenresTmdb();
-            var genre = genresList.Find(g => g.GenreId == tmdbId);
-
-            //var genre = await _context.Genres.FindAsync(id);
-
-            if (genre == null)
-            {
-                return BadRequest("Genre not found");
-            }
-            return Ok(genre);
-        }
-
-        // GET api/<GenreController>/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Genre>> GetById(int id)
-        {
-            var genre = await _context.Genres.FindAsync(id);
-
-            if (genre == null)
-            {
-                return BadRequest("Genre not found");
-            }
-            return Ok(genre);
-        }
-
-        // POST:
-        [HttpPost("Fetch&AddTmdbListToDb")]
-        public async Task<ActionResult<GenresResponse>> AddTmdbListToDb()
-        {
+            //ensure to seed with data if is empty:
             var genresList = await _myService.GetGenresTmdb();
             var genreDescriptions = await _myService.GenresDescriptions();
 
@@ -88,10 +46,25 @@ namespace MovieSystemAPI.Controllers
             }
 
             await _context.SaveChangesAsync();
+
+            //Get Data:
             return Ok(await _context.Genres.ToListAsync());
         }
 
-        [HttpPost("AddGenre")]
+        // GET api/<GenreController>/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Genre>> GetById(int id)
+        {
+            var genre = await _context.Genres.FindAsync(id);
+
+            if (genre == null)
+            {
+                return BadRequest("Genre not found");
+            }
+            return Ok(genre);
+        }
+
+        [HttpPost]
         public async Task<ActionResult<GenresResponse>> AddGenre(Genre genre)
         {
             // retrieve the list of genres already exists in the database
@@ -105,23 +78,6 @@ namespace MovieSystemAPI.Controllers
             _context.Genres.Add(genre);
             await _context.SaveChangesAsync();
             return Ok(await _context.Genres.ToListAsync());
-        }
-
-        //PUT api/<GenreController>/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult<GenresResponse>> UpdateGenre(Genre request, int id)
-        {
-            var genresList = await _myService.GetGenresTmdb();
-            var genre = genresList.Find(g => g.GenreId == id);
-
-            if (genre == null)
-            {
-                return BadRequest("Genre not found");
-            }
-
-            //genre.GenreTitle = request.GenreTitle;
-            genre.GenreDescription = request.GenreDescription;
-            return Ok(genresList);
         }
     }
 }
