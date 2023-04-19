@@ -9,7 +9,7 @@ namespace MovieSystemAPI.Models
         public int PersonMovieId { get; set; }
 
         [Required]
-        public int FkPersonGenreId { get; set; }
+        public int FkPersonId { get; set; }
 
         [Required]
         public string MovieLink { get; set; } = string.Empty;
@@ -19,6 +19,11 @@ namespace MovieSystemAPI.Models
         public int MovieAverageRate { get; set; }
 
         [JsonIgnore]
-        public virtual PersonGenre PersonGenre { get; set; }
+        public virtual Person People { get; set; }
+    }
+
+    public class MoviesResponse
+    {
+        public List<PersonMovie>? MovieLinks { get; set; }
     }
 }

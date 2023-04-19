@@ -20,8 +20,5 @@ namespace MovieSystemAPI.Models
 
         [JsonIgnore]
         public virtual Genre Genres { get; set; }
-
-        [JsonIgnore]
-        public List<PersonMovie> PersonMovies { get; set; }
     }
 }
