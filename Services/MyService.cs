@@ -69,11 +69,12 @@ namespace MovieSystemAPI.Services
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase //JSON object keys should be converted to camelCase when deserializing
                 };
                 var result = JsonSerializer.Deserialize<MoviesResponse>(responseContent, options);
-                //Console.WriteLine($"Deserialized result: {JsonSerializer.Serialize(result)}");
 
+                //retrive correct property from json
                 var jsonDoc = JsonDocument.Parse(responseContent);
                 var root = jsonDoc.RootElement;
                 var results = root.GetProperty("results");
+
                 foreach (var movieJson in results.EnumerateArray())
                 {
                     var movie = new Movie
@@ -84,6 +85,7 @@ namespace MovieSystemAPI.Services
                     };
                     movies.Add(movie);
                 }
+
                 page++;
             }
 
