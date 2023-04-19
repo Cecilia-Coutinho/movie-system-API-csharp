@@ -45,6 +45,51 @@ namespace MovieSystemAPI.Services
             return genres ?? new List<Genre>(); //if null return an empty list
         }
 
+        public async Task<List<Movie>> GetMoviesTmdb()
+        {
+            var searchMoviesUrl = _configuration.GetValue<string>("SearchMoviesUrl");
+            int totalPages = 3;
+            int page = 1;
+            var movies = new List<Movie>();
+
+            while (page <= totalPages)
+            {
+                var searchMoviesAppend = $"&sort_by=vote_average.desc&vote_count.gte=5000&with_original_language=en&page={page}";
+                var url = GetSearchQueryUri(searchMoviesUrl);
+                var finalUrl = url + searchMoviesAppend;
+                var response = await _httpClient.GetAsync(finalUrl);
+
+                response.EnsureSuccessStatusCode(); //throw exception if is false
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                //Console.WriteLine($"Response content: {responseContent}");
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase //JSON object keys should be converted to camelCase when deserializing
+                };
+                var result = JsonSerializer.Deserialize<MoviesResponse>(responseContent, options);
+                //Console.WriteLine($"Deserialized result: {JsonSerializer.Serialize(result)}");
+
+                var jsonDoc = JsonDocument.Parse(responseContent);
+                var root = jsonDoc.RootElement;
+                var results = root.GetProperty("results");
+                foreach (var movieJson in results.EnumerateArray())
+                {
+                    var movie = new Movie
+                    {
+                        MovieTmdbId = movieJson.GetProperty("id").GetInt32(),
+                        MovieTitle = movieJson.GetProperty("title").GetString(),
+                        MovieRating = movieJson.GetProperty("vote_average").GetDecimal()
+                    };
+                    movies.Add(movie);
+                }
+                page++;
+            }
+
+            return movies ?? new List<Movie>(); //if null return an empty list
+        }
+
         public async Task<Dictionary<string, string>> GenresDescriptions()
         {
             var genreDescriptions = new Dictionary<string, string>

@@ -28,6 +28,36 @@ namespace MovieSystemAPI.Controllers
         }
 
         // GET api/<PersonGenreController>/5
+        [HttpGet("GenresBy/{personId}")]
+        public async Task<ActionResult<PersonGenre>> GetGenresByPersonId(int personId)
+        {
+
+            var person = await _context.People.FindAsync(personId);
+
+            if (person == null)
+            {
+                return BadRequest($"Person with ID {personId} not found");
+            }
+
+            var genres = await _context.Genres
+                .Join(_context.PersonGenres,
+                    g => g.GenreId,
+                    pg => pg.FkGenreId,
+                    (g, pg) => new { Genre = g, PersonGenre = pg })
+                .Where(p => p.PersonGenre.FkPersonId == personId)
+                .Select(g => g.Genre.GenreTitle)
+                .ToListAsync();
+
+            if (!genres.Any())
+            {
+                return BadRequest($"No genres found");
+            }
+
+            return Ok(genres);
+        }
+
+
+        // GET api/<PersonGenreController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PersonGenre>> GetById(int id)
         {

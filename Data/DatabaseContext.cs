@@ -11,6 +11,7 @@ namespace MovieSystemAPI.Data
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<PersonGenre> PersonGenres { get; set; }
+        public DbSet<Movie> Movies { get; set; }
         public DbSet<PersonMovie> PersonMovies { get; set; }
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -21,6 +22,14 @@ namespace MovieSystemAPI.Data
 
             modelBuilder.Entity<Person>()
                 .HasIndex(e => e.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<Movie>()
+                .HasIndex(t => t.MovieTitle)
+                .IsUnique();
+
+            modelBuilder.Entity<Movie>()
+                .HasIndex(i => i.MovieTmdbId)
                 .IsUnique();
 
             modelBuilder.Entity<PersonGenre>()
