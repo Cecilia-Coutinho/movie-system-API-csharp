@@ -11,7 +11,7 @@ using MovieSystemAPI.Data;
 namespace MovieSystemAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230417150350_TablesCreate")]
+    [Migration("20230419153023_TablesCreate")]
     partial class TablesCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,6 +47,35 @@ namespace MovieSystemAPI.Migrations
                         .IsUnique();
 
                     b.ToTable("Genres");
+                });
+
+            modelBuilder.Entity("MovieSystemAPI.Models.Movie", b =>
+                {
+                    b.Property<int>("MovieId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MovieId"), 1L, 1);
+
+                    b.Property<decimal>("MovieRating")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("MovieTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("MovieTmdbId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MovieId");
+
+                    b.HasIndex("MovieTitle")
+                        .IsUnique();
+
+                    b.HasIndex("MovieTmdbId")
+                        .IsUnique();
+
+                    b.ToTable("Movies");
                 });
 
             modelBuilder.Entity("MovieSystemAPI.Models.Person", b =>
@@ -103,6 +132,32 @@ namespace MovieSystemAPI.Migrations
                     b.ToTable("PersonGenres");
                 });
 
+            modelBuilder.Entity("MovieSystemAPI.Models.PersonMovie", b =>
+                {
+                    b.Property<int>("PersonMovieId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PersonMovieId"), 1L, 1);
+
+                    b.Property<int>("FkMovieId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FkPersonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonRating")
+                        .HasColumnType("int");
+
+                    b.HasKey("PersonMovieId");
+
+                    b.HasIndex("FkMovieId");
+
+                    b.HasIndex("FkPersonId");
+
+                    b.ToTable("PersonMovies");
+                });
+
             modelBuilder.Entity("MovieSystemAPI.Models.PersonGenre", b =>
                 {
                     b.HasOne("MovieSystemAPI.Models.Genre", "Genres")
@@ -122,14 +177,40 @@ namespace MovieSystemAPI.Migrations
                     b.Navigation("People");
                 });
 
+            modelBuilder.Entity("MovieSystemAPI.Models.PersonMovie", b =>
+                {
+                    b.HasOne("MovieSystemAPI.Models.Movie", "Movies")
+                        .WithMany("PersonMovies")
+                        .HasForeignKey("FkMovieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MovieSystemAPI.Models.Person", "People")
+                        .WithMany("PersonMovies")
+                        .HasForeignKey("FkPersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Movies");
+
+                    b.Navigation("People");
+                });
+
             modelBuilder.Entity("MovieSystemAPI.Models.Genre", b =>
                 {
                     b.Navigation("PersonGenres");
                 });
 
+            modelBuilder.Entity("MovieSystemAPI.Models.Movie", b =>
+                {
+                    b.Navigation("PersonMovies");
+                });
+
             modelBuilder.Entity("MovieSystemAPI.Models.Person", b =>
                 {
                     b.Navigation("PersonGenres");
+
+                    b.Navigation("PersonMovies");
                 });
 #pragma warning restore 612, 618
         }

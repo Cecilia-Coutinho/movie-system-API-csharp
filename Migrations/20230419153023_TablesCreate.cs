@@ -23,6 +23,21 @@ namespace MovieSystemAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Movies",
+                columns: table => new
+                {
+                    MovieId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MovieTmdbId = table.Column<int>(type: "int", nullable: false),
+                    MovieTitle = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    MovieRating = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Movies", x => x.MovieId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "People",
                 columns: table => new
                 {
@@ -63,10 +78,49 @@ namespace MovieSystemAPI.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PersonMovies",
+                columns: table => new
+                {
+                    PersonMovieId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FkPersonId = table.Column<int>(type: "int", nullable: false),
+                    FkMovieId = table.Column<int>(type: "int", nullable: false),
+                    PersonRating = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersonMovies", x => x.PersonMovieId);
+                    table.ForeignKey(
+                        name: "FK_PersonMovies_Movies_FkMovieId",
+                        column: x => x.FkMovieId,
+                        principalTable: "Movies",
+                        principalColumn: "MovieId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PersonMovies_People_FkPersonId",
+                        column: x => x.FkPersonId,
+                        principalTable: "People",
+                        principalColumn: "PersonId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Genres_GenreTitle",
                 table: "Genres",
                 column: "GenreTitle",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Movies_MovieTitle",
+                table: "Movies",
+                column: "MovieTitle",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Movies_MovieTmdbId",
+                table: "Movies",
+                column: "MovieTmdbId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -84,6 +138,16 @@ namespace MovieSystemAPI.Migrations
                 name: "IX_PersonGenres_FkPersonId",
                 table: "PersonGenres",
                 column: "FkPersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonMovies_FkMovieId",
+                table: "PersonMovies",
+                column: "FkMovieId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersonMovies_FkPersonId",
+                table: "PersonMovies",
+                column: "FkPersonId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -92,7 +156,13 @@ namespace MovieSystemAPI.Migrations
                 name: "PersonGenres");
 
             migrationBuilder.DropTable(
+                name: "PersonMovies");
+
+            migrationBuilder.DropTable(
                 name: "Genres");
+
+            migrationBuilder.DropTable(
+                name: "Movies");
 
             migrationBuilder.DropTable(
                 name: "People");
