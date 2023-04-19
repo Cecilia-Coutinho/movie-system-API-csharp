@@ -20,14 +20,6 @@ namespace MovieSystemAPI.Controllers
             _context = context;
         }
 
-        //GET:
-        //[HttpGet("TMDB/FetchMovies")]
-        //public async Task<ActionResult<MoviesResponse>> GetAllFromTmdb()
-        //{
-        //    var moviesList = await _myService.GetMoviesTmdb();
-        //    return Ok(moviesList);
-        //}
-
         // GET: api/<PersonMovieController>
         [HttpGet]
         public IEnumerable<string> Get()
