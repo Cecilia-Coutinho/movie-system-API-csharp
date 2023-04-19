@@ -28,7 +28,7 @@ namespace MovieSystemAPI.Controllers
         }
 
         // GET api/<PersonGenreController>/5
-        [HttpGet("GenresBy/{personId}")]
+        [HttpGet("{personId}")]
         public async Task<ActionResult<PersonGenre>> GetGenresByPersonId(int personId)
         {
 
