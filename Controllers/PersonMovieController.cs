@@ -10,13 +10,10 @@ namespace MovieSystemAPI.Controllers
     [ApiController]
     public class PersonMovieController : ControllerBase
     {
-
-        private readonly MyService _myService;
         private readonly DatabaseContext _context;
 
-        public PersonMovieController(MyService myService, DatabaseContext context)
+        public PersonMovieController(DatabaseContext context)
         {
-            _myService = myService;
             _context = context;
         }
 
@@ -112,6 +109,42 @@ namespace MovieSystemAPI.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(await _context.PersonMovies.ToListAsync());
+        }
+
+        [HttpPost("{personId}/{movieId}/{rating}")]
+        public async Task<ActionResult<PersonMovie>> AddRating(int personId, int movieId, double rating)
+        {
+            var person = await _context.People.FindAsync(personId);
+
+            if (person == null)
+            {
+                return BadRequest($"Person with ID {personId} not found");
+            }
+
+            var movie = await _context.Movies.FindAsync(movieId);
+            if (movie == null)
+            {
+                return BadRequest($"Movie with ID {movieId} not found");
+            }
+
+            // check if person already has the movie
+            var personMovie = await _context.PersonMovies.FirstOrDefaultAsync(
+                pm => pm.FkPersonId == personId && pm.FkMovieId == movieId);
+
+            if (personMovie == null)
+            {
+                return BadRequest($"Person with ID {personId} does not have movie with ID {movieId}");
+            }
+
+            if (rating < 0 || rating > 10)
+            {
+                return BadRequest("Rating must be between 0 and 10");
+            }
+
+            personMovie.PersonRating = rating;
+            await _context.SaveChangesAsync();
+
+            return Ok(personMovie);
         }
     }
 }
