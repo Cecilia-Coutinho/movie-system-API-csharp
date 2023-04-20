@@ -14,7 +14,7 @@ namespace MovieSystemAPI.Models
         [Required]
         public int FkMovieId { get; set; }
 
-        public int PersonRating { get; set; }
+        public double PersonRating { get; set; }
 
 
         [JsonIgnore]

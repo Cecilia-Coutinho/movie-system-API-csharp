@@ -11,10 +11,10 @@ namespace MovieSystemAPI.Controllers
     [ApiController]
     public class MoviesController : ControllerBase
     {
-        private readonly MyService _myService;
+        private readonly MovieSystemService _myService;
         private readonly DatabaseContext _context;
 
-        public MoviesController(MyService myService, DatabaseContext context)
+        public MoviesController(MovieSystemService myService, DatabaseContext context)
         {
             _myService = myService;
             _context = context;

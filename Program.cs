@@ -16,7 +16,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Register HttpClient instance for the MyService Class
-builder.Services.AddHttpClient<MyService>("tmdb", c =>
+builder.Services.AddHttpClient<MovieSystemService>("tmdb", c =>
 {
     c.BaseAddress = new Uri("https://api.themoviedb.org/3/");
     c.DefaultRequestHeaders.Add("Accept", "application/json");

@@ -3,13 +3,13 @@ using System.Text.Json;
 
 namespace MovieSystemAPI.Services
 {
-    public class MyService
+    public class MovieSystemService
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;  //to read from JSON
         private readonly DatabaseContext _context;
 
-        public MyService(HttpClient httpClient, IConfiguration configuration, DatabaseContext context)
+        public MovieSystemService(HttpClient httpClient, IConfiguration configuration, DatabaseContext context)
         {
             _httpClient = httpClient;
             _configuration = configuration;

@@ -11,7 +11,7 @@ namespace MovieSystemAPI.Models
         public int MovieTmdbId { get; set; }
 
         [Required]
-        public string MovieTitle { get; set; } = string.Empty;
+        public string? MovieTitle { get; set; } = string.Empty;
         public decimal MovieRating { get; set; }
 
         [JsonIgnore]
