@@ -48,7 +48,7 @@ namespace MovieSystemAPI.Controllers
             await _context.SaveChangesAsync();
 
             //Get Data:
-            return Ok(await _context.Movies.ToListAsync());
+            return Ok(await _context.Genres.ToListAsync());
         }
 
         // GET api/<GenreController>/5

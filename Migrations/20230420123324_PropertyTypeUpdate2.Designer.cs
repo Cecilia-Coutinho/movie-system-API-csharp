@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieSystemAPI.Data;
 
@@ -10,9 +11,10 @@ using MovieSystemAPI.Data;
 namespace MovieSystemAPI.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230420123324_PropertyTypeUpdate2")]
+    partial class PropertyTypeUpdate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,9 +64,15 @@ namespace MovieSystemAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("MovieTmdbId")
+                        .HasColumnType("int");
+
                     b.HasKey("MovieId");
 
                     b.HasIndex("MovieTitle")
+                        .IsUnique();
+
+                    b.HasIndex("MovieTmdbId")
                         .IsUnique();
 
                     b.ToTable("Movies");

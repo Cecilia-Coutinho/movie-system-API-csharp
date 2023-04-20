@@ -28,10 +28,6 @@ namespace MovieSystemAPI.Data
                 .HasIndex(t => t.MovieTitle)
                 .IsUnique();
 
-            modelBuilder.Entity<Movie>()
-                .HasIndex(i => i.MovieTmdbId)
-                .IsUnique();
-
             modelBuilder.Entity<PersonGenre>()
                 .HasOne(p => p.People)
                 .WithMany(pg => pg.PersonGenres)

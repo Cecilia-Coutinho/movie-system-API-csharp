@@ -8,8 +8,6 @@ namespace MovieSystemAPI.Models
         [Key]
         public int MovieId { get; set; }
 
-        public int MovieTmdbId { get; set; }
-
         [Required]
         public string? MovieTitle { get; set; } = string.Empty;
         public decimal MovieRating { get; set; }

@@ -10,10 +10,12 @@ namespace MovieSystemAPI.Controllers
     [ApiController]
     public class PersonMovieController : ControllerBase
     {
+        private readonly MovieSystemService _myService;
         private readonly DatabaseContext _context;
 
-        public PersonMovieController(DatabaseContext context)
+        public PersonMovieController(MovieSystemService myService, DatabaseContext context)
         {
+            _myService = myService;
             _context = context;
         }
 
@@ -30,11 +32,9 @@ namespace MovieSystemAPI.Controllers
 
             return Ok(personMovieList);
         }
-
         [HttpGet("{personId}")]
-        public async Task<ActionResult<PersonMovie>> GetByPersonId(int personId)
+        public async Task<ActionResult<PersonMovie>> GetRatingsByPersonId(int personId)
         {
-
             var person = await _context.People.FindAsync(personId);
 
             if (person == null)
@@ -42,14 +42,36 @@ namespace MovieSystemAPI.Controllers
                 return BadRequest($"Person with ID {personId} not found");
             }
 
-            var movies = await _context.Movies
-                .Join(_context.PersonMovies,
-                    g => g.MovieId,
-                    pg => pg.FkMovieId,
-                    (g, pg) => new { Movie = g, PersonMovie = pg })
-                .Where(p => p.PersonMovie.FkPersonId == personId)
-                .Select(g => g.Movie.MovieTitle)
-                .ToListAsync();
+            var personMovies = await _context.PersonMovies
+                .Where(pm => pm.FkPersonId == personId)
+                .Select(pm => new PersonMovie
+                {
+                    PersonMovieId = pm.PersonMovieId,
+                    FkPersonId = pm.FkPersonId,
+                    FkMovieId = pm.FkMovieId,
+                    PersonRating = pm.PersonRating,
+                })
+               .ToListAsync();
+
+            if (!personMovies.Any())
+            {
+                return BadRequest($"No Movies found");
+            }
+
+            return Ok(personMovies);
+        }
+
+        [HttpGet("movies/{personId}")]
+        public async Task<ActionResult<PersonMovie>> GetMoviesByPersonId(int personId)
+        {
+            var person = await _context.People.FindAsync(personId);
+
+            if (person == null)
+            {
+                return BadRequest($"Person with ID {personId} not found");
+            }
+
+            var movies = await _myService.GetPersonMovieByPersonId(personId);
 
             if (!movies.Any())
             {
@@ -57,18 +79,6 @@ namespace MovieSystemAPI.Controllers
             }
 
             return Ok(movies);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PersonMovie>> GetById(int id)
-        {
-            var personMovie = await _context.PersonMovies.FindAsync(id);
-
-            if (personMovie == null)
-            {
-                return BadRequest("Person Movie not found");
-            }
-            return Ok(personMovie);
         }
 
 
@@ -112,7 +122,7 @@ namespace MovieSystemAPI.Controllers
         }
 
         [HttpPost("{personId}/{movieId}/{rating}")]
-        public async Task<ActionResult<PersonMovie>> AddRating(int personId, int movieId, double rating)
+        public async Task<ActionResult<PersonMovie>> AddRating(int personId, int movieId, decimal rating)
         {
             var person = await _context.People.FindAsync(personId);
 
@@ -141,7 +151,9 @@ namespace MovieSystemAPI.Controllers
                 return BadRequest("Rating must be between 0 and 10");
             }
 
-            personMovie.PersonRating = rating;
+            personMovie.PersonRating = rating; //update rating
+
+            await _myService.CalculateAverageRate(movieId); // update the movie's average rating
             await _context.SaveChangesAsync();
 
             return Ok(personMovie);
