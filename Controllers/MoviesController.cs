@@ -49,5 +49,38 @@ namespace MovieSystemAPI.Controllers
             //Get Data:
             return Ok(await _context.Movies.ToListAsync());
         }
+
+
+        [HttpGet("{personId}")]
+        public async Task<ActionResult<Movie>> GetRatingsByPersonId(int personId)
+        {
+            var person = await _context.People.FindAsync(personId);
+
+            if (person == null)
+            {
+                return BadRequest($"Person with ID {personId} not found");
+            }
+
+            var movies = await _myService.GetRatingsByPersonId(personId);
+
+            if (!movies.Any())
+            {
+                return BadRequest($"No Movies found");
+            }
+
+            return Ok(movies);
+        }
+
+        [HttpGet("recommendation/{genre}")]
+        public async Task<ActionResult<Movie>> GetRatingsByPersonId(string genre)
+        {
+            var movies = await _myService.GetMovieRecommendationsByGenre(genre);
+
+            if (!movies.Any())
+            {
+                return BadRequest($"No Movies found");
+            }
+            return Ok(movies);
+        }
     }
 }

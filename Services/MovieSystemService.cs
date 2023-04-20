@@ -1,4 +1,6 @@
-﻿using MovieSystemAPI.Models;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using MovieSystemAPI.Models;
+using System.Linq;
 using System.Text.Json;
 
 namespace MovieSystemAPI.Services
@@ -79,7 +81,7 @@ namespace MovieSystemAPI.Services
                 {
                     var movie = new Movie
                     {
-                        MovieTmdbId = movieJson.GetProperty("id").GetInt32(),
+                        //MovieTmdbId = movieJson.GetProperty("id").GetInt32(),
                         MovieTitle = movieJson.GetProperty("title").GetString(),
                         MovieRating = movieJson.GetProperty("vote_average").GetDecimal()
                     };
@@ -131,5 +133,107 @@ namespace MovieSystemAPI.Services
 
             return await Task.FromResult(genreDescriptions);
         }
+
+        public async Task CalculateAverageRate(int movieId)
+        {
+            var allPersonRatings = await _context.PersonMovies
+                .Where(pm => pm.FkMovieId == movieId)
+                .Select(pm => pm.PersonRating)
+                .ToListAsync();
+
+            var averageRating = allPersonRatings.Average();
+            var movie = await _context.Movies.FindAsync(movieId);
+            movie.MovieRating = averageRating;
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<string>> GetPersonMovieByPersonId(int personId)
+        {
+            var movies = await _context.Movies
+                .Join(_context.PersonMovies,
+                    m => m.MovieId,
+                    pm => pm.FkMovieId,
+                    (m, pm) => new { Movie = m, PersonMovie = pm })
+                .Where(p => p.PersonMovie.FkPersonId == personId)
+                .Select(m => m.Movie.MovieTitle)
+                .ToListAsync();
+
+            return movies;
+        }
+
+        public async Task<List<Movie>> GetRatingsByPersonId(int personId)
+        {
+            var movies = await _context.Movies
+            .Join(_context.PersonMovies,
+                m => m.MovieId,
+                pm => pm.FkMovieId,
+                (m, pm) => new { Movie = m, PersonMovie = pm })
+            .Where(p => p.PersonMovie.FkPersonId == personId)
+            .Select(m => new Movie
+            {
+                MovieId = m.Movie.MovieId,
+                MovieTitle = m.Movie.MovieTitle,
+                MovieRating = m.Movie.MovieRating
+            })
+            .ToListAsync();
+
+            return movies;
+        }
+
+        public async Task<List<Movie>> GetMovieRecommendationsByGenre(string genre)
+        {
+            var genreId = await GetTmdbGenreId(genre);
+
+            var searchMoviesUrl = _configuration.GetValue<string>("SearchMoviesUrl");
+            var searchMoviesAppend = $"&with_genres={genreId.Values.FirstOrDefault()}";
+            var url = GetSearchQueryUri(searchMoviesUrl);
+            var finalUrl = url + searchMoviesAppend;
+
+            var response = await _httpClient.GetAsync(finalUrl);
+            var content = await response.Content.ReadAsStringAsync();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            //Console.WriteLine($"Response content: {responseContent}");
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase //JSON object keys should be converted to camelCase when deserializing
+            };
+            var result = JsonSerializer.Deserialize<MoviesResponse>(responseContent, options);
+
+            var movies = new List<Movie>();
+            //retrive correct property from json
+            var jsonDoc = JsonDocument.Parse(responseContent);
+            var root = jsonDoc.RootElement;
+            var results = root.GetProperty("results");
+
+            foreach (var movieJson in results.EnumerateArray())
+            {
+                var movie = new Movie
+                {
+                    MovieTitle = movieJson.GetProperty("title").GetString(),
+                    MovieRating = movieJson.GetProperty("vote_average").GetDecimal()
+                };
+                movies.Add(movie);
+            }
+
+            return movies ?? new List<Movie>(); //if null return an empty list
+        }
+
+        public async Task<Dictionary<string, int>> GetTmdbGenreId(string genre)
+        {
+            var genresList = await GetGenresTmdb();
+            var genreTmdbID = new Dictionary<string, int>();
+            foreach (var genres in genresList)
+            {
+                if (string.Equals(genres.GenreTitle, genre, StringComparison.OrdinalIgnoreCase)) //to not accept only capitalized strings
+                {
+                    genreTmdbID.Add(genres.GenreTitle, genres.GenreId);
+                }
+            }
+            return await Task.FromResult(genreTmdbID);
+        }
+
     }
 }
