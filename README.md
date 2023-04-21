@@ -1,6 +1,4 @@
-﻿# movie-system-API-csharp
-# movie-system-API-csharp
-
+﻿
 <h1 align="center">🎬 Movie System API 🎬</h1>
 
 <p align = center>
