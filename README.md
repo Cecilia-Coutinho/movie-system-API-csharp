@@ -57,7 +57,7 @@ I chose to represent Movie as an entity rather than just an attribute in the "Pe
 If movies were only represented as a column in the "PersonGenres" table, it would result in redundant data and potentially make querying and updating the data more difficult. Updating a movie's information would require updating every row where that movie is listed, which could be time-consuming and error-prone, leading to bad design.
 
 
-Denormalization can be used to improve database performance by reducing the number of joins required for queries. However, it can also result in redundant data and potential inconsistency, leading to data anomalies. Therefore, careful consideration of the trade-offs between performance and data integrity is required when using denormalization. Due to time constraints, I did not see any immediate benefit in modifying my initial data schema using denormalization for this project.
+Denormalization can be used to improve database performance by reducing the number of joins required for queries. However, it can also result in redundant data and potential inconsistency, leading to data anomalies. Therefore, careful consideration of the trade-offs between performance and data integrity is required when using denormalization and due to time constraints, I did not see any immediate benefit in modifying my initial data schema using denormalization for this project.
 
 
 <h3>👨‍💻Code</h3>
