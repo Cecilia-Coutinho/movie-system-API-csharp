@@ -12,13 +12,12 @@ The goal of this project was to build a REST API that allows users to manage dat
 </p>
 
 <h2>📋 MVP</h2>
-<p>
+
 The Minimum Viable Product(MVP) of the Movie System API includes the following features:
-</p>
 
->📋 Get all people in the system
+📋 Get all people in the system
 
->🎭 Get all genres linked to a specific person
+🎭 Get all genres linked to a specific person
 
 >🎬 Get all movies linked to a specific person
 
