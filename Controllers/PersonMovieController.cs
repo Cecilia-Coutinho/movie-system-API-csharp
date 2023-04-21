@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieSystemAPI.Models;
 using MovieSystemAPI.Services;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -157,6 +158,52 @@ namespace MovieSystemAPI.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(personMovie);
+        }
+
+        [HttpPost("person/{personId}/genre/{genreId}/movies")]
+        public async Task<ActionResult<PersonMovie>> AddMoviesForPersonAndGenre(int personId, int genreId)
+        {
+            var person = await _context.People.FindAsync(personId);
+            if (person == null)
+            {
+                return NotFound($"Person with Id {personId} not found.");
+            }
+
+            var personGenre = await _context.PersonGenres
+                .FirstOrDefaultAsync(pg => pg.FkPersonId == personId && pg.FkGenreId == genreId);
+            if (personGenre == null)
+            {
+                return BadRequest($"Person with Id {personId} does not prefer genre with Id {genreId}.");
+            }
+
+            var movieIds = await _context.MovieGenres
+                .Where(mg => mg.FkGenreId == genreId)
+                .Select(mg => mg.FkMovieId)
+                .ToListAsync();
+
+            var existingMovieIds = await _context.PersonMovies
+                .Where(pm => pm.FkPersonId == personId)
+                .Select(pm => pm.FkMovieId)
+                .ToListAsync();
+
+            var newMovieIds = movieIds.Except(existingMovieIds);
+
+            var newMovies = await _context.Movies
+                .Where(m => newMovieIds.Contains(m.MovieId))
+                .ToListAsync();
+
+            var personMoviesToAdd = newMovies
+                .Select(m => new PersonMovie
+                {
+                    FkPersonId = personId,
+                    FkMovieId = m.MovieId
+                })
+                .ToList();
+
+            _context.PersonMovies.AddRange(personMoviesToAdd);
+
+            await _context.SaveChangesAsync();
+            return Ok(newMovies);
         }
     }
 }

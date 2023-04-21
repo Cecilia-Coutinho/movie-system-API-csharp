@@ -111,5 +111,6 @@ namespace MovieSystemAPI.Controllers
         {
             return Ok(await _context.MovieGenres.ToListAsync());
         }
+
     }
 }
