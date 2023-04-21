@@ -148,28 +148,30 @@ namespace MovieSystemAPI.Services
             return movies ?? new List<MovieDetailsResponse>(); //if null return an empty list
         }
 
-        public async Task<List<MovieGenre>> AddMovieGenre()
+        public async Task<List<MovieGenre>> MapMovieGenresToDatabase()
         {
             var movies = await _context.Movies.ToListAsync();
-
+            var movieGenresTmdb = await GetMoviesWithGenresTmdb();
             var movieGenreList = new List<MovieGenre>();
 
             foreach (var movie in movies)
             {
-                var movieGenresTmdb = await GetMoviesWithGenresTmdb();
-
+                // iterate over each movie with genres from the external API
                 foreach (var movieTmdb in movieGenresTmdb)
                 {
                     if (movieTmdb.MovieTitle == movie.MovieTitle)
                     {
+                        // iterate over each genre associated with the movie from the external API
                         foreach (var genreId in movieTmdb.GenresTmdbId)
                         {
                             var genreList = await GetGenresTmdb();
 
+                            // retrieve the details of the current genre
                             var genreDetails = genreList.FirstOrDefault(g => g.GenreId == genreId);
 
                             if (genreDetails != null)
                             {
+                                // retrieve the genre from the database
                                 var genre = await _context.Genres.FirstOrDefaultAsync(g => g.GenreTitle == genreDetails.GenreTitle);
 
                                 if (genre != null)
@@ -187,6 +189,7 @@ namespace MovieSystemAPI.Services
                     }
                 }
             }
+            // return the list of movie genre associations
             return movieGenreList;
         }
 

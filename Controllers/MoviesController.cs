@@ -48,7 +48,7 @@ namespace MovieSystemAPI.Controllers
             await _context.SaveChangesAsync();
 
             //also ensure to seed MovieGenres before
-            var movieGenres = await _myService.AddMovieGenre();
+            var movieGenres = await _myService.MapMovieGenresToDatabase();
 
             if (!movieGenres.Any())
             {
