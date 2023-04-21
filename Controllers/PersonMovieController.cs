@@ -33,7 +33,7 @@ namespace MovieSystemAPI.Controllers
 
             return Ok(personMovieList);
         }
-        [HttpGet("{personId}")]
+        [HttpGet("person/{personId}")]
         public async Task<ActionResult<PersonMovie>> GetRatingsByPersonId(int personId)
         {
             var person = await _context.People.FindAsync(personId);
@@ -62,7 +62,7 @@ namespace MovieSystemAPI.Controllers
             return Ok(personMovies);
         }
 
-        [HttpGet("movies/{personId}")]
+        [HttpGet("movies/person/{personId}")]
         public async Task<ActionResult<PersonMovie>> GetMoviesByPersonId(int personId)
         {
             var person = await _context.People.FindAsync(personId);
@@ -83,7 +83,7 @@ namespace MovieSystemAPI.Controllers
         }
 
 
-        [HttpPost("{personId}/{movieId}")]
+        [HttpPost("person/{personId}/movie/{movieId}")]
         public async Task<ActionResult<List<PersonMovie>>> AddPersonMovie(int personId, int movieId)
         {
             var person = await _context.People.FindAsync(personId);
@@ -122,7 +122,7 @@ namespace MovieSystemAPI.Controllers
             return Ok(await _context.PersonMovies.ToListAsync());
         }
 
-        [HttpPost("{personId}/{movieId}/{rating}")]
+        [HttpPost("person/{personId}/movie/{movieId}/rating/{rating}")]
         public async Task<ActionResult<PersonMovie>> AddRating(int personId, int movieId, decimal rating)
         {
             var person = await _context.People.FindAsync(personId);
