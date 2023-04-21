@@ -107,7 +107,7 @@ namespace MovieSystemAPI.Controllers
         }
 
         [HttpGet("MovieGenre/")]
-        public async Task<ActionResult<MovieGenre>> AddMovieGenres()
+        public async Task<ActionResult<MovieGenre>> GetMovieGenres()
         {
             return Ok(await _context.MovieGenres.ToListAsync());
         }
