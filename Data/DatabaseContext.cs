@@ -47,6 +47,16 @@ namespace MovieSystemAPI.Data
                 .HasOne(p => p.Movies)
                 .WithMany(pg => pg.PersonMovies)
                 .HasForeignKey(fkp => fkp.FkMovieId);
+
+            modelBuilder.Entity<MovieGenre>()
+                .HasOne(m => m.Movies)
+                .WithMany(mg => mg.MovieGenres)
+                .HasForeignKey(fkm => fkm.FkMovieId);
+
+            modelBuilder.Entity<MovieGenre>()
+                .HasOne(g => g.Genres)
+                .WithMany(mg => mg.MovieGenres)
+                .HasForeignKey(fkg => fkg.FkGenreId);
         }
         public async Task PeopleDataSeed()
         {

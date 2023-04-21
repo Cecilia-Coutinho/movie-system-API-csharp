@@ -25,6 +25,7 @@ namespace MovieSystemAPI.Models
 
         [JsonIgnore]
         public List<PersonGenre>? PersonGenres { get; set; }
+        public List<MovieGenre>? MovieGenres { get; set; }
     }
 
     public class GenresResponse
