@@ -22,4 +22,13 @@ namespace MovieSystemAPI.Models
         public List<Movie>? Movies { get; set; }
     }
 
+    public class MovieDetailsResponse
+    {
+        [JsonPropertyName("title")]
+        public string? MovieTitle { get; set; } = string.Empty;
+
+        [JsonPropertyName("genre_ids")]
+        public List<int> GenresTmdbId { get; set; } = new List<int>();
+    }
+
 }

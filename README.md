@@ -29,6 +29,7 @@ The Minimum Viable Product(MVP) of the Movie System API includes the following f
 
 >🔍 Get suggestions for movies in a certain genre from an external API, e.g. TMDB.
 
+
 <h2>💻 Technology Stack</h2>
 
 >👨‍💻 <b>C#</b>: primary language.
@@ -42,6 +43,7 @@ The Minimum Viable Product(MVP) of the Movie System API includes the following f
 >👥 <b>GitHub</b>: version control.
 
 >🖥️ <b>Visual Studio</b>: IDE.
+
 
 <h2>💭Reflections and Aditional Info</h2>
 

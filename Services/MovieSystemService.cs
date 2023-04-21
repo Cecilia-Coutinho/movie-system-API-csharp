@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.FileSystemGlobbing;
 using MovieSystemAPI.Models;
+using System.Dynamic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
 
 namespace MovieSystemAPI.Services
@@ -87,11 +91,103 @@ namespace MovieSystemAPI.Services
                     };
                     movies.Add(movie);
                 }
-
+                //totalPages = root.GetProperty("total_pages").GetInt32();
                 page++;
             }
 
             return movies ?? new List<Movie>(); //if null return an empty list
+        }
+
+        public async Task<List<MovieDetailsResponse>> GetMoviesWithGenresTmdb()
+        {
+            var searchMoviesUrl = _configuration.GetValue<string>("SearchMoviesUrl");
+            int totalPages;
+            int page = 1;
+            var movies = new List<MovieDetailsResponse>();
+
+            do
+            {
+                var searchMoviesAppend = $"&sort_by=vote_average.desc&vote_count.gte=5000&with_original_language=en&page={page}";
+                var url = GetSearchQueryUri(searchMoviesUrl);
+                var finalUrl = url + searchMoviesAppend;
+                var response = await _httpClient.GetAsync(finalUrl);
+
+                response.EnsureSuccessStatusCode(); //throw exception if is false
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                //Console.WriteLine($"Response content: {responseContent}");
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase //JSON object keys should be converted to camelCase when deserializing
+                };
+                var result = JsonSerializer.Deserialize<MovieDetailsResponse>(responseContent, options);
+
+                //retrive correct property from json
+                var jsonDoc = JsonDocument.Parse(responseContent);
+                var root = jsonDoc.RootElement;
+                var results = root.GetProperty("results");
+
+                foreach (var movieJson in results.EnumerateArray())
+                {
+                    var movie = new MovieDetailsResponse
+                    {
+                        MovieTitle = movieJson.GetProperty("title").GetString(),
+                        GenresTmdbId = movieJson.GetProperty("genre_ids").EnumerateArray().Select(x => x.GetInt32()).ToList()
+                    };
+                    movies.Add(movie);
+                }
+
+                // totalPages = root.GetProperty("total_pages").GetInt32();
+                totalPages = 3;
+                page++;
+
+            } while (page <= totalPages);
+
+
+            return movies ?? new List<MovieDetailsResponse>(); //if null return an empty list
+        }
+
+        public async Task<List<MovieGenre>> AddMovieGenre()
+        {
+            var movies = await _context.Movies.ToListAsync();
+
+            var movieGenreList = new List<MovieGenre>();
+
+            foreach (var movie in movies)
+            {
+                var movieGenresTmdb = await GetMoviesWithGenresTmdb();
+
+                foreach (var movieTmdb in movieGenresTmdb)
+                {
+                    if (movieTmdb.MovieTitle == movie.MovieTitle)
+                    {
+                        foreach (var genreId in movieTmdb.GenresTmdbId)
+                        {
+                            var genreList = await GetGenresTmdb();
+
+                            var genreDetails = genreList.FirstOrDefault(g => g.GenreId == genreId);
+
+                            if (genreDetails != null)
+                            {
+                                var genre = await _context.Genres.FirstOrDefaultAsync(g => g.GenreTitle == genreDetails.GenreTitle);
+
+                                if (genre != null)
+                                {
+                                    var movieGenre = new MovieGenre
+                                    {
+                                        FkMovieId = movie.MovieId,
+                                        FkGenreId = genre.GenreId
+                                    };
+
+                                    movieGenreList.Add(movieGenre);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return movieGenreList;
         }
 
         public async Task<Dictionary<string, string>> GenresDescriptions()

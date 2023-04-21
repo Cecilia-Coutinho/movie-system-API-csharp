@@ -13,6 +13,7 @@ namespace MovieSystemAPI.Data
         public DbSet<PersonGenre> PersonGenres { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<PersonMovie> PersonMovies { get; set; }
+        public DbSet<MovieGenre> MovieGenres { get; set; }
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
