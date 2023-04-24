@@ -55,7 +55,7 @@ namespace MovieSystemAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Genre>> GetById(int id)
         {
-            var genre = await _context.Movies.FindAsync(id);
+            var genre = await _context.Genres.FindAsync(id);
 
             if (genre == null)
             {

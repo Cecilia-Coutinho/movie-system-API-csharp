@@ -46,7 +46,7 @@ The Minimum Viable Product(MVP) of the Movie System API includes the following f
 
 >🦜 <b>Swagger</b>: API structure reader.
 
->🛌 <b>Insomnia</b>: For testing the API.
+>🛌 <b>Insomnia</b>: API test case management tool.
 <h2>💭Reflections and Aditional Info</h2>
 
 In this section, you can find my reflections on working with SQL and Rest-API, along with some additional information and insights gained throughout the project.
@@ -85,3 +85,267 @@ With these improvements, I believe the code could be more maintainable, testable
 
 In summary,I acknowledge that I could have done a better job with these aspects of the project, and I recognize that there is always room for improvement. In the future, I plan to continue learning and implementing best practices to improve the quality and maintainability of my code.
 
+<h3>🧪 API EndPoints Test Cases</h3>
+
+<br>
+📋 <b>GET</b> all people in the system:
+
+- *Url path:* ` /person `
+
+- *Status Code:* ` 200 OK `
+
+- *Response Body:* 
+<pre><code>
+[
+	{
+		"personId": 4,
+		"firstName": "Kalle",
+		"lastName": "Tester",
+		"email": "kalle.tester@example.com"
+	},
+	{
+		"personId": 6,
+		"firstName": "Krille",
+		"lastName": "Tester",
+		"email": "krille.tester@example.com"
+	}
+]
+</code></pre>
+
+<br>
+🎭 <b>GET</b> all genres linked to a specific person:
+
+- *Url path:* ` /persongenre/person?personId=<<personId>> `
+
+- *Status Code:* ` 200 OK `
+
+- *Response Body:* 
+<pre><code>
+[
+	"Action",
+	"Adventure",
+	"Animation",
+	"Comedy",
+	"Crime",
+	"Documentary",
+	"Drama",
+	"Family"
+]
+</code></pre>
+
+<br>
+🎬 <b>GET</b> all movies linked to a specific person:
+
+- *Url path:* ` /personmovie/movies/person?personId=<<personId>> `
+
+- *Status Code:* ` 200 OK `
+
+- *Response Body:* 
+<pre><code>
+[
+	"The Godfather",
+	"The Shawshank Redemption",
+	"The Godfather Part II",
+	"12 Angry Men",
+	"Spider-Man: Into the Spider-Verse",
+	"Puss in Boots: The Last Wish",
+	"The Lion King",
+	"Coco"
+]
+</code></pre>
+
+<br>
+⭐ <b>POST</b> ratings for movies linked to a person:
+
+- *Url path:* ` /personmovie/movierating?personId=<<personId>>&movieId=<<movieId>> `
+
+- *JSON Input:* ` 3.5 `
+
+- *Status Code:* ` 200 OK `
+
+- *Response Body:* 
+<pre><code>
+{
+	"personMovieId": 21,
+	"fkPersonId": 1,
+	"fkMovieId": 15,
+	"personRating": 3.5
+}
+</code></pre>
+
+<br>
+⭐ <b>GET</b> ratings for movies linked to a person:
+
+- *Url path:* ` /personmovie/movie/rating/person?personId=<<personId>> `
+
+- *Status Code:* ` 200 OK `
+
+- *Response Body:* 
+<pre><code>
+
+[
+	{
+		"personMovieId": 21,
+		"fkPersonId": 1,
+		"fkMovieId": 15,
+		"personRating": 3.50
+	},
+	{
+		"personMovieId": 22,
+		"fkPersonId": 1,
+		"fkMovieId": 30,
+		"personRating": 0.00
+	}
+]
+</code></pre>
+
+<br>
+🔗 <b>POST</b> a person to a new genre:
+
+- *Url path:* ` /persongenre/person?personId=<<personId>> `
+
+- *JSON Input:* ` 2 `
+
+- *Status Code:* ` 200 OK `
+
+- *Response Body:* 
+
+<pre><code>
+{
+	"personGenreId": 12,
+	"fkPersonId": 6,
+	"fkGenreId": 2
+}
+</code></pre>
+
+<br>
+➕ <b>POST</b> new movies for a specific person and a specific genre:
+
+- *Url path:* ` /personmovie/movies?personId=<<personId>>&genreId=<<genreId>> `
+
+- *Status Code:* ` 200 OK `
+
+- *Response Body:* 
+
+<pre><code>
+[
+	{
+		"movieId": 4,
+		"title": "Schindler's List",
+		"rating": 8.60
+	},
+	{
+		"movieId": 5,
+		"title": "12 Angry Men",
+		"rating": 8.50
+	},
+	{
+		"movieId": 12,
+		"title": "Psycho",
+		"rating": 8.40
+	},
+	{
+		"movieId": 14,
+		"title": "One Flew Over the Cuckoo's Nest",
+		"rating": 8.40
+	},
+	{
+		"movieId": 59,
+		"title": "Django Unchained",
+		"rating": 8.20
+	}
+]
+</code></pre>
+
+<br>
+🔍 <b>GET</b> suggestions for movies in a certain genre from an external API, e.g. TMDB.:
+
+- *Url path:* ` /movies/recommendation?genre=<<genreName>> `
+
+- *Status Code:* ` 200 OK `
+
+- *Response Body for genre=action:* 
+<pre><code>
+[
+	{
+		"title": "Shazam! Fury of the Gods",
+		"rating": 6.9
+	},
+	{
+		"title": "Ant-Man and the Wasp: Quantumania",
+		"rating": 6.5
+	},
+	{
+		"title": "Avatar: The Way of Water",
+		"rating": 7.7
+	},
+	{
+		"title": "Creed III",
+		"rating": 7.3
+	},
+	{
+		"title": "Murder Mystery 2",
+		"rating": 6.6
+	},
+	{
+		"title": "Pirates Down the Street II: The Ninjas from Across",
+		"rating": 8
+	},
+	{
+		"title": "65",
+		"rating": 6.3
+	},
+	{
+		"title": "John Wick: Chapter 4",
+		"rating": 8
+	},
+	{
+		"title": "Kill Boksoon",
+		"rating": 6.7
+	},
+	{
+		"title": "Supercell",
+		"rating": 6.3
+	},
+	{
+		"title": "Attack on Titan",
+		"rating": 6.2
+	},
+	{
+		"title": "The Last Kingdom: Seven Kings Must Die",
+		"rating": 7.5
+	},
+	{
+		"title": "The Park",
+		"rating": 5.8
+	},
+	{
+		"title": "Black Panther: Wakanda Forever",
+		"rating": 7.3
+	},
+	{
+		"title": "Black Adam",
+		"rating": 7.1
+	},
+	{
+		"title": "Plane",
+		"rating": 6.9
+	},
+	{
+		"title": "Gold Run",
+		"rating": 6.6
+	},
+	{
+		"title": "Queens on the Run",
+		"rating": 7.2
+	},
+	{
+		"title": "Shotgun Wedding",
+		"rating": 6.3
+	},
+	{
+		"title": "Fast X",
+		"rating": 0
+	}
+]
+</code></pre>

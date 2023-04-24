@@ -94,7 +94,7 @@ namespace MovieSystemAPI.Controllers
             return Ok(movies);
         }
 
-        [HttpGet("recommendation/{genre}")]
+        [HttpGet("recommendation")]
         public async Task<ActionResult<Movie>> GetRatingsByPersonId(string genre)
         {
             var movies = await _myService.GetMovieRecommendationsByGenre(genre);
@@ -103,7 +103,10 @@ namespace MovieSystemAPI.Controllers
             {
                 return BadRequest($"No Movies found");
             }
-            return Ok(movies);
+
+            var result = movies.Select(m => new { Title = m.MovieTitle, Rating = m.MovieRating });
+
+            return Ok(result);
         }
 
         [HttpGet("MovieGenre/")]

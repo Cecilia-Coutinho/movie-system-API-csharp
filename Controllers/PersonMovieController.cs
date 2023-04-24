@@ -33,7 +33,7 @@ namespace MovieSystemAPI.Controllers
 
             return Ok(personMovieList);
         }
-        [HttpGet("person/{personId}")]
+        [HttpGet("movie/rating/person")]
         public async Task<ActionResult<PersonMovie>> GetRatingsByPersonId(int personId)
         {
             var person = await _context.People.FindAsync(personId);
@@ -62,7 +62,7 @@ namespace MovieSystemAPI.Controllers
             return Ok(personMovies);
         }
 
-        [HttpGet("movies/person/{personId}")]
+        [HttpGet("movies/person")]
         public async Task<ActionResult<PersonMovie>> GetMoviesByPersonId(int personId)
         {
             var person = await _context.People.FindAsync(personId);
@@ -122,8 +122,8 @@ namespace MovieSystemAPI.Controllers
             return Ok(await _context.PersonMovies.ToListAsync());
         }
 
-        [HttpPost("person/{personId}/movie/{movieId}/rating/{rating}")]
-        public async Task<ActionResult<PersonMovie>> AddRating(int personId, int movieId, decimal rating)
+        [HttpPost("movierating")]
+        public async Task<ActionResult<PersonMovie>> AddRating(int personId, int movieId, [FromBody] decimal rating)
         {
             var person = await _context.People.FindAsync(personId);
 
@@ -160,7 +160,7 @@ namespace MovieSystemAPI.Controllers
             return Ok(personMovie);
         }
 
-        [HttpPost("person/{personId}/genre/{genreId}/movies")]
+        [HttpPost("movies")]
         public async Task<ActionResult<PersonMovie>> AddMoviesForPersonAndGenre(int personId, int genreId)
         {
             var person = await _context.People.FindAsync(personId);
@@ -203,7 +203,9 @@ namespace MovieSystemAPI.Controllers
             _context.PersonMovies.AddRange(personMoviesToAdd);
 
             await _context.SaveChangesAsync();
-            return Ok(newMovies);
+
+            var result = newMovies.Select(m => new { MovieId = m.MovieId, Title = m.MovieTitle, Rating = m.MovieRating });
+            return Ok(result);
         }
     }
 }
