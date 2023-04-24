@@ -63,7 +63,7 @@ If movies were only represented as a column in the "PersonGenres" table, it woul
 
 Denormalization can be used to improve database performance by reducing the number of joins required for queries. However, it can also result in redundant data and potential inconsistency, leading to data anomalies. Therefore, careful consideration of the trade-offs between performance and data integrity is required when using denormalization and due to time constraints, I did not see any immediate benefit in modifying my initial data schema using denormalization for this project, despite being aware that it could simplify the queries to facilitate data's retrieving.
 
-DataSchema:
+**DataSchema:**
 
 ![DataSchema](DataSchema.PNG)
 
