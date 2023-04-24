@@ -8,7 +8,7 @@ by <a href="https://github.com/Cecilia-Coutinho">Cecilia Coutinho</a>
 <h2>🌍 Overview</h2>
 
 <p align = center>
-The goal of this project was to build a REST API that allows users to manage data related to movies, genres, people, and ratings. The API was built using ASP.NET Core and Entity Framework, and it provides endpoints for retrieving and adding data.
+This project was developed as a requirement for Chas Academy, and as such, it followed the specified requirements and deadline. The primary objective of the project was to build a REST API that enables users to manage data related to movies, genres, people, and ratings. To achieve this, it was utilized ASP.NET Core and Entity Framework to develop an API that provides various endpoints for retrieving and adding data.
 </p>
 
 <h2>📋 MVP</h2>
@@ -34,7 +34,7 @@ The Minimum Viable Product(MVP) of the Movie System API includes the following f
 
 >👨‍💻 <b>C#</b>: primary language.
 
->🚀 <b>ASP.NET</b>: Software framework.
+>🚀 <b>ASP.NET</b>: Framework.
 
 >🗄️ <b>Entity Framework</b>: Object-relational mapper.
 
@@ -44,7 +44,9 @@ The Minimum Viable Product(MVP) of the Movie System API includes the following f
 
 >🖥️ <b>Visual Studio</b>: IDE.
 
+>🦜 <b>Swagger</b>: API structure reader.
 
+>🛌 <b>Insomnia</b>: For testing the API.
 <h2>💭Reflections and Aditional Info</h2>
 
 In this section, you can find my reflections on working with SQL and Rest-API, along with some additional information and insights gained throughout the project.
@@ -61,6 +63,9 @@ If movies were only represented as a column in the "PersonGenres" table, it woul
 
 Denormalization can be used to improve database performance by reducing the number of joins required for queries. However, it can also result in redundant data and potential inconsistency, leading to data anomalies. Therefore, careful consideration of the trade-offs between performance and data integrity is required when using denormalization and due to time constraints, I did not see any immediate benefit in modifying my initial data schema using denormalization for this project, despite being aware that it could simplify the queries to facilitate data's retrieving.
 
+Data schema:
+
+DataSchema.PNG
 
 <h3>👨‍💻Code</h3>
 
