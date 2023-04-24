@@ -85,6 +85,17 @@ With these improvements, I believe the code could be more maintainable, testable
 
 In summary,I acknowledge that I could have done a better job with these aspects of the project, and I recognize that there is always room for improvement. In the future, I plan to continue learning and implementing best practices to improve the quality and maintainability of my code.
 
+
+**Code Structure**
+
+The code is structured as follows:
+
+* **/Controllers** - Contains all the controllers used for creating the required endpoints.
+* **/Data** - Contains the Database Context and related entities.
+* **/Migrations** - Contains all the migrations to the SQL database.
+* **/Models** - Contains the data model for the database tables and controllers.
+* **/Services** - Contains auxiliary code necessary for the controllers to function properly.
+
 <h3>🧪 API EndPoints Test Cases</h3>
 
 <br>
