@@ -29,7 +29,7 @@ The Minimum Viable Product(MVP) of the Movie System API includes the following f
 
 >🔍 Get suggestions for movies in a certain genre from an external API, e.g. TMDB.
 
-
+<br>
 <h2>💻 Technology Stack</h2>
 
 >👨‍💻 <b>C#</b>: primary language.
@@ -47,11 +47,13 @@ The Minimum Viable Product(MVP) of the Movie System API includes the following f
 >🦜 <b>Swagger</b>: API structure reader.
 
 >🛌 <b>Insomnia</b>: API test case management tool.
+
+<br>
 <h2>💭Reflections and Aditional Info</h2>
 
 In this section, you can find my reflections on working with SQL and Rest-API, along with some additional information and insights gained throughout the project.
 
-
+<br>
 <h3>🔍SQL</h3>
 
 The data schema for this project was designed to store and retrieve data related to people, genres, movies, and their relationships.
@@ -67,7 +69,7 @@ Denormalization can be used to improve database performance by reducing the numb
 
 ![DataSchema](DataSchema.PNG)
 
-
+<br>
 <h3>👨‍💻Code</h3>
 
 The project was designed to allow Entity Framework to interact with the database and expose a REST API using ASP.NET Core. It has endpoints implemented to retrieve data related to people, genres, and movies, as well as endpoints to add and retrieve ratings for movies, to link a person to a new genre, add new movies for a specific person and a specific genre and link people to genres.
@@ -96,6 +98,7 @@ The code is structured as follows:
 * **/Models** - Contains the data model for the database tables and controllers.
 * **/Services** - Contains auxiliary code necessary for the controllers to function properly.
 
+<br>
 <h3>🧪 API EndPoints Test Cases</h3>
 
 <br>
