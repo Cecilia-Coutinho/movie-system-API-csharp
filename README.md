@@ -8,7 +8,7 @@ by <a href="https://github.com/Cecilia-Coutinho">Cecilia Coutinho</a>
 <h2>🌍 Overview</h2>
 
 <p align = center>
-This project was developed as a requirement for Chas Academy, and as such, it followed the specified requirements and deadline. The primary objective of the project was to build a REST API that enables users to manage data related to movies, genres, people, and ratings. To achieve this, it was utilized ASP.NET Core and Entity Framework to develop an API that provides various endpoints for retrieving and adding data.
+The development of this project was required by Chas Academy, and as such, it followed the specified requirements and deadline. The primary objective of the project was to build a REST API that enables users to manage data related to movies, genres, people, and ratings. To achieve this, it was utilized ASP.NET Core and Entity Framework to develop an API that provides various endpoints for retrieving and adding data.
 </p>
 
 <h2>📋 MVP</h2>
