@@ -290,7 +290,6 @@ namespace MovieSystemAPI.Services
             var finalUrl = url + searchMoviesAppend;
 
             var response = await _httpClient.GetAsync(finalUrl);
-            var content = await response.Content.ReadAsStringAsync();
 
             var responseContent = await response.Content.ReadAsStringAsync();
             //Console.WriteLine($"Response content: {responseContent}");
