@@ -95,7 +95,7 @@ namespace MovieSystemAPI.Controllers
         }
 
         [HttpGet("recommendation")]
-        public async Task<ActionResult<Movie>> GetRatingsByPersonId(string genre)
+        public async Task<ActionResult<Movie>> GetRecommendationsByGenre(string genre)
         {
             var movies = await _myService.GetMovieRecommendationsByGenre(genre);
 
