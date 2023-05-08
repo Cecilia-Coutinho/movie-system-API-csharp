@@ -275,7 +275,9 @@ namespace MovieSystemAPI.Services
             {
                 MovieId = m.Movie.MovieId,
                 MovieTitle = m.Movie.MovieTitle,
-                MovieRating = m.Movie.MovieRating
+                MovieRating = m.Movie.MovieRating,
+                PosterPathTMDB= m.Movie.PosterPathTMDB,
+                Overview = m.Movie.Overview
             })
             .ToListAsync();
 
