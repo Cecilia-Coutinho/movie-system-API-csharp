@@ -11,6 +11,8 @@ namespace MovieSystemAPI.Models
         [Required]
         public string? MovieTitle { get; set; } = string.Empty;
         public decimal MovieRating { get; set; }
+        public string? PosterPathTMDB { get; set; }
+        public string? Overview { get; set; }
 
         [JsonIgnore]
         public List<PersonMovie>? PersonMovies { get; set; }

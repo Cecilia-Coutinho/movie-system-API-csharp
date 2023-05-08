@@ -87,7 +87,9 @@ namespace MovieSystemAPI.Services
                     {
                         //MovieTmdbId = movieJson.GetProperty("id").GetInt32(),
                         MovieTitle = movieJson.GetProperty("title").GetString(),
-                        MovieRating = movieJson.GetProperty("vote_average").GetDecimal()
+                        MovieRating = movieJson.GetProperty("vote_average").GetDecimal(),
+                        Overview = movieJson.GetProperty("overview").GetString(),
+                        PosterPathTMDB = movieJson.GetProperty("poster_path").GetString()
                     };
                     movies.Add(movie);
                 }
