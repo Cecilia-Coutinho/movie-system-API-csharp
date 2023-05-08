@@ -15,6 +15,12 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//services cors
+builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
+
 //Register HttpClient instance for the MyService Class
 builder.Services.AddHttpClient<MovieSystemService>("tmdb", c =>
 {
@@ -31,6 +37,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//app cors
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseCors("corsapp");
+app.UseAuthorization();
+
+//app.UseCors(prodCorsPolicy);
 
 app.UseHttpsRedirection();
 

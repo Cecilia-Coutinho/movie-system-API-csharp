@@ -115,5 +115,17 @@ namespace MovieSystemAPI.Controllers
             return Ok(await _context.MovieGenres.ToListAsync());
         }
 
+        [HttpGet("MovieByNameTmdb/{movieName}")]
+        public async Task<ActionResult<List<MovieTMDB>>> GetMoviesTmdb(string movieName)
+        {
+            return Ok(await _myService.GetMoviesByNameTmdb(movieName));
+        }
+
+        [HttpGet("MovieByTMDBId/{TMDBId}")]
+        public async Task<ActionResult<MovieTMDB>> GetMoviesTmdb(int TMDBId)
+        {
+            return Ok(await _myService.GetMoviesIdTmdb(TMDBId));
+        }
+
     }
 }

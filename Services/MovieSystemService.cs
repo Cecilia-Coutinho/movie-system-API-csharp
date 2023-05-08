@@ -333,5 +333,89 @@ namespace MovieSystemAPI.Services
             return await Task.FromResult(genreTmdbID);
         }
 
+
+        public async Task<List<MovieTMDB>> GetMoviesByNameTmdb(string movieName)
+        {
+            var searchMoviesUrl = _configuration.GetValue<string>("SearchMoviesUrl2nd");
+            var movies = new List<MovieTMDB>();
+
+            var searchMoviesAppend = $"&query={movieName}";
+            var url = GetSearchQueryUri(searchMoviesUrl);
+            var finalUrl = url + searchMoviesAppend;
+            var response = await _httpClient.GetAsync(finalUrl);
+
+            response.EnsureSuccessStatusCode(); //throw exception if is false
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            //Console.WriteLine($"Response content: {responseContent}");
+
+            //retrive correct property from json
+            var jsonDoc = JsonDocument.Parse(responseContent);
+            var root = jsonDoc.RootElement;
+            var results = root.GetProperty("results");
+
+            foreach (var result in results.EnumerateArray())
+            {
+                var id = result.GetProperty("id").GetInt32();
+                var title = result.GetProperty("original_title").GetString();
+                var overview = result.GetProperty("overview").GetString();
+                var posterPath = result.GetProperty("poster_path").GetString();
+                var releaseDate = result.GetProperty("release_date").GetString();
+                var voteAverage = result.GetProperty("vote_average").GetDouble();
+
+                var movie = new MovieTMDB
+                {
+                    Id = id,
+                    Title = title,
+                    Overview = overview,
+                    PosterPath = posterPath,
+                    ReleaseDate = releaseDate,
+                    VoteAverage = voteAverage
+                };
+
+                movies.Add(movie);
+            }
+
+            return movies; //if null return an empty list
+
+        }
+
+        public async Task<MovieTMDB> GetMoviesIdTmdb(int movieId)
+        {
+            var searchMovieUrl = _configuration.GetValue<string>("SearchMoviesById").Replace("{id}", movieId.ToString());
+            var movie = new MovieTMDB();
+
+            var url = GetSearchQueryUri(searchMovieUrl);
+            var response = await _httpClient.GetAsync(url);
+
+            response.EnsureSuccessStatusCode(); //throw exception if is false
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            //Console.WriteLine($"Response content: {responseContent}");
+
+            //retrive correct property from json
+            var jsonDoc = JsonDocument.Parse(responseContent);
+            var root = jsonDoc.RootElement;
+
+            var id = root.GetProperty("id").GetInt32();
+            var title = root.GetProperty("original_title").GetString();
+            var overview = root.GetProperty("overview").GetString();
+            var posterPath = root.GetProperty("poster_path").GetString();
+            var releaseDate = root.GetProperty("release_date").GetString();
+            var voteAverage = root.GetProperty("vote_average").GetDouble();
+
+            movie = new MovieTMDB
+            {
+                Id = id,
+                Title = title,
+                Overview = overview,
+                PosterPath = posterPath,
+                ReleaseDate = releaseDate,
+                VoteAverage = voteAverage
+            };
+
+            return movie;
+
+        }
     }
 }
